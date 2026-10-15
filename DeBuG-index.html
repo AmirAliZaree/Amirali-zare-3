@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#030305">
+<title>DeBuG - Amir Ali Portfolio</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;600;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script>
+tailwind.config={darkMode:'class',theme:{extend:{colors:{cyber:{bg:'#030305',card:'#0a0a0f',cardHover:'#12121c',red:'#ff003c',border:'#1f1f2e',textMuted:'#8b8ba7'}},fontFamily:{orbitron:['Orbitron','sans-serif'],mono:['Share Tech Mono','monospace'],sans:['Inter','sans-serif']}}}};
+</script>
+<style>
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:90px}body{background:#030305;color:#fff;font-family:Inter,sans-serif;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;background:linear-gradient(rgba(18,16,16,0) 50%,rgba(0,0,0,.2) 50%),linear-gradient(90deg,rgba(255,0,60,.02),rgba(0,255,255,.01));z-index:99;background-size:100% 4px,6px 100%;pointer-events:none}
+.glow-red{text-shadow:0 0 10px rgba(255,0,60,.8),0 0 20px rgba(255,0,60,.4)}.box-glow{box-shadow:0 0 20px rgba(255,0,60,.15),inset 0 0 15px rgba(255,0,60,.05)}
+.box-glow-hover{transition:all .3s}.box-glow-hover:hover{box-shadow:0 0 25px rgba(255,0,60,.35);border-color:#ff003c;transform:translateY(-2px)}
+.cyber-border{position:relative;background:linear-gradient(135deg,#0a0a0f,#050508);border:1px solid #1f1f2e}.cyber-border:before{content:"";position:absolute;top:0;left:0;width:8px;height:8px;border-top:2px solid #ff003c;border-left:2px solid #ff003c;pointer-events:none}.cyber-border:after{content:"";position:absolute;bottom:0;right:0;width:8px;height:8px;border-bottom:2px solid #ff003c;border-right:2px solid #ff003c;pointer-events:none}
+.glitch-title{position:relative;font-family:Orbitron,sans-serif;font-weight:900}.glitch-title:before,.glitch-title:after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}.glitch-title:before{left:2px;text-shadow:-2px 0 #ff003c;clip-path:inset(40% 0 45%);animation:glitch 5s infinite alternate}.glitch-title:after{left:-2px;text-shadow:-2px 0 #0ff;clip-path:inset(65% 0 15%);animation:glitch2 5s infinite alternate}
+@keyframes glitch{0%{clip-path:inset(30% 0 60%)}40%{clip-path:inset(65% 0 10%)}80%{clip-path:inset(10% 0 70%)}100%{clip-path:inset(55% 0 25%)}}@keyframes glitch2{0%{clip-path:inset(70% 0 10%)}40%{clip-path:inset(15% 0 65%)}80%{clip-path:inset(45% 0 35%)}100%{clip-path:inset(5% 0 80%)}}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#030305}::-webkit-scrollbar-thumb{background:#ff003c;border-radius:3px}
+button,a,input,textarea{ -webkit-tap-highlight-color:transparent }button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid #ff003c;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body class="min-h-screen text-slate-100 flex flex-col justify-between selection:bg-red-600 selection:text-white">
+<header class="w-full border-b border-cyber-border py-4 px-4 sm:px-6 md:px-12 flex justify-between items-center bg-[#030305]/95 backdrop-blur-md sticky top-0 z-50">
+<div class="font-orbitron font-black text-2xl md:text-3xl tracking-widest text-white glow-red">De<span class="text-red-600">BuG</span></div>
+<div class="flex items-center gap-3 sm:gap-4">
+<button id="themeToggle" class="w-9 h-9 rounded-full bg-cyber-card border border-cyber-border text-red-500 hover:text-white transition" title="Theme information" aria-label="Theme information"><i class="fa-solid fa-moon text-sm"></i></button>
+<button id="soundToggle" class="w-9 h-9 rounded-full bg-cyber-card border border-cyber-border text-red-500 hover:text-white transition" title="Music controls" aria-label="Music controls"><i class="fa-solid fa-music text-sm"></i></button>
+<button id="menuToggle" class="w-9 h-9 rounded-full bg-cyber-card border border-cyber-border text-red-500 md:hidden" aria-label="Toggle menu" aria-controls="sidebar" aria-expanded="false"><i class="fa-solid fa-bars text-sm" id="menuIcon"></i></button>
+<div class="hidden md:flex items-center gap-2 text-xs font-mono text-red-500 border border-red-900/50 bg-red-950/20 px-3 py-1.5 rounded"><span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>DEBUG / 2026</div>
+</div></header>
+<div id="sidebarBackdrop" class="fixed inset-x-0 bottom-0 top-[73px] bg-black/70 z-30 hidden md:hidden" aria-hidden="true"></div>
+<div class="flex flex-1 max-w-[1600px] w-full mx-auto relative">
+<aside id="sidebar" class="fixed md:sticky top-[73px] left-0 h-[calc(100dvh-73px)] md:h-[calc(100vh-73px)] w-64 bg-[#030305]/98 md:bg-transparent border-r border-cyber-border p-6 flex flex-col justify-between z-40 -translate-x-full md:translate-x-0 transition-transform duration-300">
+<nav class="space-y-2">
+<a href="#home" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg bg-red-600 text-white font-medium shadow-lg shadow-red-600/30"><i class="fa-solid fa-house w-5 text-center"></i>Home</a>
+<a href="#about" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-white hover:bg-cyber-card"><i class="fa-solid fa-user w-5 text-center"></i>About</a>
+<a href="#projects" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-white hover:bg-cyber-card"><i class="fa-solid fa-code w-5 text-center"></i>Projects</a>
+<a href="#skills" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-white hover:bg-cyber-card"><i class="fa-solid fa-layer-group w-5 text-center"></i>Skills</a>
+<a href="#terminal" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-white hover:bg-cyber-card"><i class="fa-solid fa-terminal w-5 text-center"></i>Terminal</a>
+<a href="#contact" class="nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-white hover:bg-cyber-card"><i class="fa-solid fa-envelope w-5 text-center"></i>Contact</a>
+</nav>
+<div class="pt-6 border-t border-cyber-border hidden md:block"><div class="relative w-full h-24 border border-red-900/30 rounded bg-gradient-to-b from-red-950/10 to-transparent p-2 flex flex-col justify-between"><div class="flex justify-between text-[10px] font-mono text-red-500"><span>SYS.SEC</span><span class="animate-pulse">ACTIVE</span></div><div class="w-full bg-red-950/40 h-1.5 rounded-full overflow-hidden"><div class="bg-red-600 h-full w-[85%] animate-pulse"></div></div><div class="text-[10px] font-mono text-slate-400">NODE: TABRIZ-01</div></div></div>
+</aside>
+<main class="flex-1 min-w-0 px-4 md:px-10 py-8 space-y-20 max-w-full overflow-hidden">
+<section id="home" class="relative min-h-[80vh] flex flex-col lg:flex-row items-center justify-between gap-12 py-10 cyber-border p-6 sm:p-8 md:p-12 rounded-2xl box-glow">
+<div class="absolute right-10 top-1/2 -translate-y-1/2 w-72 h-72 md:w-96 md:h-96 rounded-full bg-red-600/5 blur-2xl pointer-events-none"></div>
+<div class="space-y-6 z-10 max-w-2xl w-full"><div class="inline-flex items-center gap-2 text-red-500 font-mono text-sm tracking-wider"><span class="w-3 h-0.5 bg-red-600"></span>HELLO, I'M</div>
+<h1 class="glitch-title text-4xl sm:text-6xl lg:text-7xl tracking-wider uppercase break-words" data-text="AMIR ALI">AMIR ALI</h1>
+<p class="font-mono text-red-500 text-xs sm:text-sm md:text-base tracking-widest flex flex-wrap gap-2"><span>DEVELOPER</span><span class="text-slate-600">/</span><span>HACKER</span><span class="text-slate-600">/</span><span>DREAMER</span></p>
+<p class="text-slate-300 text-sm md:text-base leading-relaxed max-w-lg font-light">Not just a developer...<br>I'm building the future, one line of code at a time.</p>
+<div class="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-red-900/60 bg-red-950/30 text-red-400 font-mono text-sm"><i class="fa-solid fa-location-dot text-red-600"></i><span>Tabriz</span></div>
+<div class="flex flex-wrap items-center gap-3 pt-2">
+<a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social" title="GitHub"><i class="fa-brands fa-github"></i></a><a href="https://telegram.org" target="_blank" rel="noopener noreferrer" class="social" title="Telegram"><i class="fa-brands fa-telegram"></i></a><a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social" title="Instagram"><i class="fa-brands fa-instagram"></i></a><a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+</div></div>
+<div class="relative z-10 flex flex-col items-center mt-6 lg:mt-0 w-full lg:w-auto">
+<div class="relative w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 rounded-full p-2 border-2 border-red-600/60 shadow-[0_0_50px_rgba(255,0,60,0.3)] bg-gradient-to-tr from-red-950 via-black to-red-900/40">
+<div class="absolute inset-0 rounded-full border-4 border-red-600 animate-spin opacity-20 pointer-events-none"></div>
+<img id="heroImage" src="assets/profile.jpg" alt="Amir Ali portrait" class="w-full h-full object-cover rounded-full grayscale contrast-125 hover:grayscale-0 transition duration-500" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 300 300%22%3E%3Crect width=%22300%22 height=%22300%22 fill=%22%230a0a0f%22/%3E%3Ctext x=%22150%22 y=%22160%22 fill=%22%23ff003c%22 font-size=%2230%22 text-anchor=%22middle%22%3EAdd%20profile.jpg%3C/text%3E%3C/svg%3E'>
+</div>
+<div class="flex flex-wrap justify-center gap-2 mt-4">
+</div>
+
+<div class="mt-5 flex items-center gap-2 text-xs font-mono text-red-500 uppercase tracking-widest"><span>Scroll Down</span><i class="fa-solid fa-arrow-down"></i></div>
+</div></section>
+<section id="about" class="space-y-10"><div class="space-y-2"><span class="text-red-600 font-mono text-sm">01. ABOUT ME</span><h2 class="text-3xl md:text-4xl font-orbitron font-bold tracking-wide">WHO AM I ?</h2></div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"><div class="lg:col-span-5 cyber-border p-6 rounded-xl box-glow flex flex-col space-y-6">
+<div class="relative rounded-lg overflow-hidden border border-cyber-border h-64 bg-black"><img id="aboutImage" src="assets/profile.jpg" alt="Amir Ali portrait" class="w-full h-full object-cover grayscale" onerror="this.style.display='none'"><div class="absolute top-3 right-3 bg-black/80 border border-green-500/50 px-2.5 py-1 rounded text-[11px] font-mono text-green-400"><span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-1"></span>ONLINE</div></div>
+<div class="space-y-2 font-mono text-sm"><div class="flex justify-between border-b border-cyber-border pb-2"><span class="text-slate-400">Name:</span><span>Amir Ali</span></div><div class="flex justify-between border-b border-cyber-border pb-2"><span class="text-slate-400">Role:</span><span class="text-red-500">Developer</span></div><div class="flex justify-between border-b border-cyber-border pb-2"><span class="text-slate-400">Location:</span><span>Tabriz</span></div><div class="flex justify-between pb-1"><span class="text-slate-400">Status:</span><span class="text-green-400">Online</span></div></div><div class="pt-2 text-right font-orbitron text-red-500 text-lg tracking-widest italic opacity-80">Amir Ali</div></div>
+<div class="lg:col-span-7 space-y-8"><div class="cyber-border p-8 rounded-xl space-y-6 box-glow"><p class="text-slate-300 leading-relaxed text-sm md:text-base font-light">I'm Amir Ali, a passionate developer, problem solver and tech enthusiast. I love working with modern technologies, building useful tools, and exploring the endless possibilities of the digital world.</p>
+<div class="flex flex-wrap gap-2.5 pt-2"><span class="tag">Web Development</span><span class="tag">Cyber Security</span><span class="tag">Linux</span><span class="tag">Python</span><span class="tag">JavaScript</span><span class="tag">UI/UX</span></div></div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4"><div class="stat"><i class="fa-solid fa-code"></i><div><h4>5+</h4><p>Projects</p></div></div><div class="stat"><i class="fa-solid fa-users"></i><div><h4>1K+</h4><p>Visitors</p></div></div><div class="stat"><i class="fa-solid fa-clock"></i><div><h4>100%</h4><p>Motivation</p></div></div></div></div></div></section>
+<section id="projects" class="space-y-10"><div class="flex flex-col md:flex-row md:items-end justify-between gap-4"><div class="space-y-2"><span class="text-red-600 font-mono text-sm">02. MY PROJECTS</span><h2 class="text-3xl md:text-4xl font-orbitron font-bold tracking-wide">Some of my recent works.</h2></div><button onclick="openModal('All Projects','Project links have not been configured yet.')" class="text-red-500 font-mono text-sm hover:text-red-400">View All Projects <i class="fa-solid fa-arrow-right ml-1"></i></button></div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="project"><div class="project-art"><span class="font-orbitron font-bold text-red-500 text-xl">DeBuG</span></div><h3>Config Builder</h3><p>A simple and powerful config builder for X-UI panel.</p><button onclick="openModal('Config Builder','The live project URL has not been configured yet.')">View Project <i class="fa-solid fa-arrow-right"></i></button></div>
+<div class="project"><div class="project-art"><i class="fa-solid fa-cloud-arrow-up text-3xl text-blue-400"></i><span class="font-mono text-[10px] text-blue-300">upload.debug.com</span></div><h3>Upload Platform</h3><p>Fast and secure file upload service.</p><button onclick="openModal('Upload Platform','The live project URL has not been configured yet.')">View Project <i class="fa-solid fa-arrow-right"></i></button></div>
+<div class="project"><div class="project-art"><i class="fa-brands fa-github text-4xl"></i></div><h3>GitHub Repositories</h3><p>My public repositories and open source projects.</p><button onclick="openModal('GitHub Repositories','Add your GitHub profile URL to make this link work.')">View Project <i class="fa-solid fa-arrow-right"></i></button></div>
+<div class="project"><div class="project-art"><span class="font-mono text-xs text-red-400">~/experiments/</span></div><h3>More Projects</h3><p>Different tools, scripts and experiments in my journey.</p><button onclick="openModal('More Projects','More project links can be added to this card.')">View Project <i class="fa-solid fa-arrow-right"></i></button></div>
+</div></section>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<section id="terminal" class="lg:col-span-7 space-y-6 flex flex-col"><div class="space-y-2"><span class="text-red-600 font-mono text-sm">03. TERMINAL</span><h2 class="text-2xl md:text-3xl font-orbitron font-bold">Try some commands...</h2></div>
+<div class="cyber-border rounded-xl flex-1 flex flex-col overflow-hidden box-glow min-h-[350px]"><div class="bg-cyber-card border-b border-cyber-border px-4 py-3 flex items-center justify-between"><div class="flex gap-2"><span class="w-3 h-3 rounded-full bg-red-600"></span><span class="w-3 h-3 rounded-full bg-yellow-500"></span><span class="w-3 h-3 rounded-full bg-green-500"></span></div><span class="font-mono text-xs text-slate-400">bash - amir@debug:~</span></div>
+<div id="terminalBody" class="p-4 font-mono text-xs sm:text-sm flex-1 overflow-y-auto space-y-2 bg-[#020204]/90 text-slate-200 max-h-[320px]"><div class="text-slate-400">Type <span class="text-red-500 font-bold">help</span> to see available commands.</div></div>
+<form id="terminalForm" class="bg-cyber-card border-t border-cyber-border px-4 py-3 flex items-center gap-2"><span class="font-mono text-red-500 text-xs sm:text-sm">amir@debug:~$</span><input id="terminalInput" type="text" autocomplete="off" class="min-w-0 flex-1 bg-transparent font-mono text-xs sm:text-sm text-white focus:outline-none" placeholder="type a command..." aria-label="Terminal command"></form></div></section>
+<section id="skills" class="lg:col-span-5 space-y-6"><div class="space-y-2"><span class="text-red-600 font-mono text-sm">04. SKILLS</span><h2 class="text-2xl md:text-3xl font-orbitron font-bold">Tools I work with.</h2></div><div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+<div class="skill"><i class="fa-brands fa-html5 text-red-500"></i><span>HTML</span></div><div class="skill"><i class="fa-brands fa-css3-alt text-blue-500"></i><span>CSS</span></div><div class="skill"><i class="fa-brands fa-js text-yellow-400"></i><span>JavaScript</span></div><div class="skill"><i class="fa-brands fa-python text-blue-400"></i><span>Python</span></div><div class="skill"><i class="fa-brands fa-php text-indigo-400"></i><span>PHP</span></div><div class="skill"><i class="fa-brands fa-node-js text-green-500"></i><span>Node.js</span></div><div class="skill"><i class="fa-brands fa-react text-cyan-400"></i><span>React</span></div><div class="skill"><i class="fa-brands fa-git-alt text-red-600"></i><span>Git</span></div><div class="skill"><i class="fa-brands fa-linux"></i><span>Linux</span></div><div class="skill"><i class="fa-brands fa-docker text-blue-500"></i><span>Docker</span></div>
+</div></section></div>
+<section id="contact" class="cyber-border p-8 md:p-12 rounded-2xl box-glow space-y-8"><div class="max-w-xl space-y-2"><span class="text-red-600 font-mono text-sm">05. CONTACT</span><h2 class="text-3xl font-orbitron font-bold">GET IN TOUCH</h2><p class="text-slate-400 text-sm">Have a project in mind or want to collaborate? Send a message.</p></div>
+<form id="contactForm" class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl"><div class="space-y-2"><label for="contactName" class="block font-mono text-xs text-slate-300">YOUR NAME</label><input id="contactName" type="text" required maxlength="100" class="field" placeholder="Amir Ali"></div><div class="space-y-2"><label for="contactEmail" class="block font-mono text-xs text-slate-300">YOUR EMAIL</label><input id="contactEmail" type="email" required maxlength="200" class="field" placeholder="amir@example.com"></div><div class="md:col-span-2 space-y-2"><label for="contactMessage" class="block font-mono text-xs text-slate-300">MESSAGE</label><textarea id="contactMessage" rows="4" required maxlength="3000" class="field" placeholder="Write your message here..."></textarea></div><div><button type="submit" class="px-8 py-3 rounded-lg bg-red-600 hover:bg-red-700 text-white font-mono text-sm tracking-wider shadow-lg shadow-red-600/30">OPEN EMAIL APP</button><p class="text-xs text-slate-500 mt-2">Opens your email app; it does not send silently.</p></div></form></section>
+</main></div>
+<footer class="w-full border-t border-cyber-border py-8 px-6 md:px-12 flex flex-col md:flex-row justify-between items-center bg-[#030305] gap-4"><div class="font-orbitron font-bold text-xl tracking-widest glow-red">De<span class="text-red-600">BuG</span></div><div class="text-xs font-mono text-slate-400">© 2026 Amir Ali. All rights reserved.</div><div class="text-xs font-mono text-red-500"><span>Better Code</span><span class="text-slate-600 mx-2">/</span><span>Better Future</span></div></footer>
+<div id="infoModal" class="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="cyber-border max-w-md w-full p-6 rounded-xl space-y-4 box-glow bg-cyber-card"><div class="flex justify-between items-center border-b border-cyber-border pb-3"><h3 id="modalTitle" class="font-orbitron font-bold text-lg">Notification</h3><button onclick="closeModal()" class="text-slate-400 hover:text-red-500" aria-label="Close"><i class="fa-solid fa-xmark text-lg"></i></button></div><p id="modalMessage" class="text-slate-300 text-sm font-mono"></p><div class="text-right pt-2"><button onclick="closeModal()" class="px-5 py-2 rounded bg-red-600 text-white font-mono text-xs hover:bg-red-700">CLOSE</button></div></div></div>
+<!-- Local music controls; chosen audio stays on this device/browser session -->
+<div id="musicDock" class="fixed bottom-3 right-3 z-40 hidden w-[min(340px,calc(100vw-24px))] cyber-border rounded-xl p-3 bg-[#0a0a0f] box-glow">
+<div class="flex items-center justify-between mb-2"><span class="font-mono text-xs text-red-400"><i class="fa-solid fa-music mr-1"></i> YOUR MUSIC</span><button id="closeMusic" class="text-slate-400 hover:text-white" aria-label="Close music player"><i class="fa-solid fa-xmark"></i></button></div>
+<audio id="musicPlayer" controls autoplay loop preload="auto" class="w-full"><source src="assets/music.mp3" type="audio/mpeg">Your browser does not support audio playback.</audio>
+<div class="flex gap-2 mt-2"><button id="stopMusic" class="text-xs font-mono border border-cyber-border px-3 py-2 rounded text-slate-300">Stop</button></div><p id="musicStatus" class="text-[10px] text-slate-500 mt-2">Music file: <span class="text-red-400">assets/music.mp3</span></p>
+</div>
+<style>
+.social{width:40px;height:40px;border-radius:9999px;background:#0a0a0f;border:1px solid #1f1f2e;display:flex;align-items:center;justify-content:center;color:#cbd5e1;transition:.2s}.social:hover{color:white;border-color:#ff003c;background:#ff003c1a}
+.tag{padding:6px 14px;border-radius:6px;border:1px solid #6b1028;background:#30000d55;color:#fb7185;font:11px 'Share Tech Mono',monospace}
+.stat{border:1px solid #1f1f2e;background:linear-gradient(135deg,#0a0a0f,#050508);border-radius:12px;padding:20px;display:flex;align-items:center;gap:14px;transition:.2s}.stat:hover{border-color:#ff003c;transform:translateY(-2px)}.stat>i{width:48px;height:48px;border-radius:8px;background:#45001566;border:1px solid #6b1028;display:grid;place-items:center;color:#ff003c;font-size:20px}.stat h4{font:700 24px Orbitron,sans-serif}.stat p{font:11px 'Share Tech Mono',monospace;color:#94a3b8}
+.project{border:1px solid #1f1f2e;background:linear-gradient(135deg,#0a0a0f,#050508);border-radius:12px;padding:24px;display:flex;flex-direction:column;justify-content:space-between;transition:.25s;min-width:0}.project:hover{border-color:#ff003c;transform:translateY(-2px);box-shadow:0 0 25px #ff003c22}.project-art{height:144px;border:1px solid #1f1f2e;border-radius:8px;background:#050508;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;margin-bottom:16px}.project h3{font:700 16px Orbitron,sans-serif;margin-bottom:12px}.project p{font-size:12px;line-height:1.6;color:#94a3b8}.project button{margin-top:24px;color:#fb7185;font:12px 'Share Tech Mono',monospace;text-align:left}.project button:hover{color:#fff}
+.skill{border:1px solid #1f1f2e;background:linear-gradient(135deg,#0a0a0f,#050508);border-radius:12px;padding:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;transition:.25s}.skill:hover{border-color:#ff003c;transform:translateY(-2px)}.skill i{font-size:30px}.skill span{font:12px 'Share Tech Mono',monospace;color:#cbd5e1}
+.field{width:100%;background:#0a0a0f;border:1px solid #1f1f2e;border-radius:8px;padding:12px 16px;font:13px 'Share Tech Mono',monospace;color:#fff;outline:none;transition:.2s}.field:focus{border-color:#ff003c}
+</style>
+<script>
+(() => {
+ const $ = id => document.getElementById(id);
+ const sidebar=$('sidebar'), menu=$('menuToggle'), menuIcon=$('menuIcon');
+ const links=[...document.querySelectorAll('.nav-link')];
+ function activeLink(){const hash=location.hash||'#home';links.forEach(a=>{const on=a.getAttribute('href')===hash;a.classList.toggle('bg-red-600',on);a.classList.toggle('text-white',on);a.classList.toggle('shadow-lg',on);a.classList.toggle('shadow-red-600/30',on);a.classList.toggle('text-slate-400',!on);});}
+ links.forEach(a=>a.addEventListener('click',()=>{activeLink();if(innerWidth<768)closeSidebar();}));addEventListener('hashchange',activeLink);activeLink();
+
+ window.showModal=(title,message)=>{const modal=$('infoModal');$('modalTitle').textContent=title;$('modalMessage').textContent=message;modal.classList.remove('hidden');modal.classList.add('flex');};
+ window.closeModal=()=>{$('infoModal').classList.add('hidden');$('infoModal').classList.remove('flex');};
+ window.openModal=(title,message='Project information is not configured yet.')=>showModal(title,message);
+ $('infoModal').addEventListener('click',e=>{if(e.target===$('infoModal'))closeModal();});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();$('musicDock').classList.add('hidden');}});
+
+ // Sidebar: keep the panel below the sticky header and use a backdrop on mobile.
+ const backdrop=$('sidebarBackdrop');
+ function closeSidebar(){
+   sidebar?.classList.add('-translate-x-full');
+   backdrop?.classList.add('hidden');
+   if(menuIcon)menuIcon.className='fa-solid fa-bars text-sm';
+   if(menu)menu.setAttribute('aria-expanded','false');
+   document.body.classList.remove('overflow-hidden');
+ }
+ function openSidebar(){
+   sidebar?.classList.remove('-translate-x-full');
+   backdrop?.classList.remove('hidden');
+   if(menuIcon)menuIcon.className='fa-solid fa-xmark text-sm';
+   if(menu)menu.setAttribute('aria-expanded','true');
+   document.body.classList.add('overflow-hidden');
+ }
+ menu?.setAttribute('aria-controls','sidebar');
+ menu?.setAttribute('aria-expanded','false');
+ // Replace the earlier click handlers with a single controlled handler.
+ menu?.addEventListener('click',e=>{
+   e.preventDefault();e.stopPropagation();
+   if(sidebar.classList.contains('-translate-x-full'))openSidebar();else closeSidebar();
+ });
+ backdrop?.addEventListener('click',closeSidebar);
+ links.forEach(a=>a.addEventListener('click',()=>{if(innerWidth<768)closeSidebar();}));
+ addEventListener('resize',()=>{if(innerWidth>=768)closeSidebar();});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSidebar();});
+
+ // Music file must exist at assets/music.mp3 in the GitHub repository.
+ const musicDock=$('musicDock'), player=$('musicPlayer'), musicStatus=$('musicStatus');
+ let musicStarted=false, musicStoppedByUser=false;
+ const startMusic=()=>{
+   if(!player || musicStarted || musicStoppedByUser) return;
+   const attempt=player.play();
+   if(attempt && typeof attempt.then==='function'){
+     attempt.then(()=>{
+       musicStarted=true;
+       if(musicStatus) musicStatus.textContent='Now playing: assets/music.mp3';
+     }).catch(()=>{
+       if(musicStatus) musicStatus.textContent='Tap or touch the page once to allow music playback.';
+     });
+   }
+ };
+ // Attempt on page load, then retry after the first real user gesture if blocked.
+ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',startMusic,{once:true});
+ else startMusic();
+ const firstGesture=()=>{startMusic();};
+ ['pointerdown','keydown','touchstart'].forEach(eventName=>document.addEventListener(eventName,firstGesture,{passive:true}));
+ $('soundToggle').addEventListener('click',()=>{
+   const opening=musicDock.classList.contains('hidden');
+   musicDock.classList.toggle('hidden');
+   if(opening){startMusic();player.focus({preventScroll:true});}
+ });
+ $('closeMusic').addEventListener('click',()=>musicDock.classList.add('hidden'));
+ $('stopMusic').addEventListener('click',()=>{
+   player.pause();player.currentTime=0;musicStarted=false;musicStoppedByUser=true;
+   if(musicStatus) musicStatus.textContent='Music stopped. Open the music controls to play again.';
+ });
+ player.addEventListener('play',()=>{musicStarted=true;musicStoppedByUser=false;});
+ player.addEventListener('error',()=>{
+   if(musicStatus) musicStatus.textContent='Cannot load assets/music.mp3. Check that the file exists and the name matches exactly.';
+ });
+ // Terminal commands: render user input as text, never HTML.
+ const terminal=$('terminalBody'), input=$('terminalInput');
+ const initial=document.createElement('div');initial.className='text-slate-400';initial.textContent='Type help to see available commands.';terminal.append(initial);
+ const answers={
+  about:'Amir Ali is a passionate developer and tech enthusiast based in Tabriz.',
+  projects:'Projects: Config Builder, Upload Platform, GitHub Repositories, More Projects.',
+  skills:'Tech Stack: HTML, CSS, JavaScript, Python, PHP, Node.js, React, Git, Linux, Docker.',
+  contact:'Use the contact form to open an email draft.',
+  help:'Available commands: help, about, projects, skills, contact, clear'
+ };
+ function addLine(text,cls='text-slate-300 pl-4'){const d=document.createElement('div');d.className=cls;d.textContent=text;terminal.append(d);}
+ $('terminalForm').addEventListener('submit',e=>{
+   e.preventDefault();const cmd=input.value.trim().toLowerCase();if(!cmd)return;addLine('amir@debug:~$ '+cmd,'text-red-400');input.value='';
+   if(cmd==='clear'){terminal.replaceChildren();return;}
+   addLine(answers[cmd]||('Command not found: '+cmd+'. Type help for available commands.'));
+   terminal.scrollTop=terminal.scrollHeight;
+ });
+
+ // This is a static page, so open an email draft instead of falsely claiming the message was sent.
+ $('contactForm').addEventListener('submit',e=>{
+   e.preventDefault();const name=$('contactName').value.trim(),email=$('contactEmail').value.trim(),message=$('contactMessage').value.trim();
+   if(!name||!email||!message){showModal('Missing details','Please fill in all fields.');return;}
+   const recipient=''; // Add your email address here to enable the mail app link.
+   if(!recipient){showModal('Contact Not Configured','The form is working, but no recipient email is configured yet. Add your email address in the script to open a message draft.');return;}
+   const subject=encodeURIComponent('Portfolio contact from '+name);
+   const body=encodeURIComponent('Name: '+name+'\nEmail: '+email+'\n\n'+message);
+   location.href='mailto:'+recipient+'?subject='+subject+'&body='+body;
+ });
+ $('themeToggle').addEventListener('click',()=>showModal('Theme Mode','Cyber Dark Mode is the original theme. The original appearance has been preserved.'));
+})();
+</script>
+</body>
+</html>
